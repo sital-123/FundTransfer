@@ -37,7 +37,9 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "user")
     Account account;
 
-    @JsonIgnore
+  
+
+	@JsonIgnore
     @Enumerated(EnumType.STRING)
     private LoginStatus loginStatus;
 
@@ -62,6 +64,12 @@ public class User {
 
     public User() {
     }
+    
+    public User(String userName, String password) {
+  		super();
+  		this.userName = userName;
+  		this.password = password;
+  	}
 
 	public Long getUserId() {
 		return userId;

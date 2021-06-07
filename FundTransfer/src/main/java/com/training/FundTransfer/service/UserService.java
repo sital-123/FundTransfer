@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.training.FundTransfer.DTO.UserDTO;
 import com.training.FundTransfer.entities.Account;
+import com.training.FundTransfer.entities.LoginStatus;
 import com.training.FundTransfer.entities.User;
 import com.training.FundTransfer.exception.EmailAndUserNameValidationException;
+import com.training.FundTransfer.exception.UserNotFoundException;
 
 import javax.validation.Valid;
 
@@ -54,10 +56,26 @@ public class UserService {
 
 	public ResponseEntity loginUser(String email, String password) {
 		// TODO Auto-generated method stub
-		return null;
+		User user = userRepository.findByEmailAndPassword(email, password);
+		if(user == null) {
+			throw new UserNotFoundException();
+		}
+		else if(user.getEmail().equals(email) && password.equals(user.getPassword())) {
+			user.setLoginStatus(LoginStatus.Success);
+			userRepository.save(user);
+			
+		}
+		return new ResponseEntity<>("User Login Successfully", HttpStatus.OK);
+		
+		
 	}
 
 	public ResponseEntity getAllUsers() {
 		// TODO Auto-generated method stub
 		return (ResponseEntity) userRepository.findAll();
+	}
+
+	public User loginUser(ResponseEntity<User> userthree) {
+		// TODO Auto-generated method stub
+		return null;
 	}}
